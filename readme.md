@@ -74,7 +74,7 @@ pip install -r requirements.txt
 
 
 ```bash
-git clone https://github.com/yourusername/ACM-Inductions.git
+git clone [https://github.com/yourusername/ACM-Inductions.git](https://github.com/RockingAayush/ACM-Induction.git)
 ```
 
 
