@@ -82,7 +82,7 @@ git clone https://github.com/RockingAayush/ACM-Induction.git
 
 
 ```bash
-cd ACM-Inductions/mysite/
+cd ACM-Inductions/
 ```
 
 3.  Install the required dependencies:
