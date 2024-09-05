@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header text-center bg-light text-dark py-3">
+                    <h3 class="mb-0">Application Form</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_name" class="form-label">Name</label>
+                            <input type="text" name="name" id="id_name" class="form-control" value="{{ form.name.value|default_if_none:'' }}" placeholder="Enter your name">
+                            {% if form.name.errors %}
+                                <div class="text-danger">{{ form.name.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_email" class="form-label">Email</label>
+                            <input type="email" name="email" id="id_email" class="form-control" value="{{ form.email.value|default_if_none:'' }}" placeholder="Enter your email">
+                            {% if form.email.errors %}
+                                <div class="text-danger">{{ form.email.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_about" class="form-label">About</label>
+                            <textarea name="about" id="id_about" class="form-control" rows="5" placeholder="Tell us about yourself">{{ form.about.value|default_if_none:'' }}</textarea>
+                            {% if form.about.errors %}
+                                <div class="text-danger">{{ form.about.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-outline-success w-100">Apply</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Induction Process Report</h1>
+
+    <!-- Total Applicants -->
+    <div class="mt-5">
+        <h4>Total Applicants : {{ total_applicants }}</h4>
+    </div>
+
+    <!-- Application Status Summary -->
+    <div class="mt-5">
+        <h4>Application Status Summary</h4>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Status</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for status in status_summary %}
+                    <tr>
+                        <td>{{ status.application_status }}</td>
+                        <td>{{ status.count }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Interview Panel Summary -->
+    <div class="mt-5">
+        <h4>Interview Panel Summary</h4>
+        {% for panel in panels %}
+            <h5>{{ panel.member_name }} ({{ panel.role }})</h5>
+            <ul>
+                {% for applicant in panel.applicantdata_set.all %}
+                    <li>{{ applicant.name }} - {{ applicant.application_status }}</li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </div>
+
+    <!-- Scheduled Interviews -->
+    <div class="mt-5">
+        <h4>Scheduled Interviews</h4>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Applicant</th>
+                    <th>Interview Panel</th>
+                    <th>Scheduled Time Slot</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for interview in scheduled_interviews %}
+                    <tr>
+                        <td>{{ interview.name }}</td>
+                        <td>{{ interview.interview_panel.member_name }}</td>
+                        <td>{{ interview.scheduled_time_slot }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Feedback Summary -->
+    <div class="mt-5">
+        <h4>Feedback and Ratings</h4>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Applicant</th>
+                    <th>Feedback</th>
+                    <th>Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for feedback in feedback_summary %}
+                    <tr>
+                        <td>{{ feedback.name }}</td>
+                        <td>{{ feedback.feedback_text }}</td>
+                        <td>{{ feedback.rating }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-danger mb-4">Back to Dashboard</a>
+</div>
+{% endblock %}

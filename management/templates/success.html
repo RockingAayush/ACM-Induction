@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card text-center">
+                <div class="card-header bg-light text-success py-3">
+                    <h3 class="mb-0">Application Submitted Successfully!!!</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text lead">
+                        Thank you for submitting your application! We have received your details and will be in touch with you soon.
+                    </p>
+                    <a href="{% url 'select' %}" class="btn btn-primary mt-3">Go to Home</a>
+                </div>
+                <div class="card-footer text-muted">
+                    If you have any questions, please contact us at <a href="mailto:rastogi.bkn@gmail.com">rastogi.bkn@gmail.com</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

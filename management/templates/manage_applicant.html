@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<style>
+    .form-control {
+    border: 2px solid rgb(218, 218, 219) !important;
+    border-radius: 0.5rem;
+    padding: 10px;
+}
+
+.input-group-text {
+    border-radius: 0.5rem 0 0 0.5rem;
+    border: 2px solid rgb(218, 218, 219);
+    border-left: 0;
+}
+
+input[type="number"] {
+    border: 2px solid rgb(218, 218, 219) !important;
+}
+
+.btn-outline-success {
+    border-color: #28a745;
+    color: #28a745;
+}
+
+.btn-outline-success:hover {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-outline-secondary {
+    border-color: #6c757d;
+    color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: white;
+}
+
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header text-center bg-light text-dark py-3">
+                    <h3 class="mb-0">Manage Applicant - {{ applicant.name }}</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Non-editable fields -->
+                    <div class="mb-4">
+                        <label class="form-label"><strong>Name:</strong></label>
+                        <p class="form-control-plaintext">{{ applicant.name }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label"><strong>Email:</strong></label>
+                        <p class="form-control-plaintext">{{ applicant.email }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label"><strong>About:</strong></label>
+                        <p class="form-control-plaintext">{{ applicant.about }}</p>
+                    </div>
+
+                    <!-- Form for editable fields -->
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <!-- Application Status -->
+                        <div class="mb-4">
+                            <label class="form-label" for="application_status"><strong>Application Status</strong></label>
+                            <select id="application_status" name="application_status" class="form-control border-primary">
+                                <option value="Pending" {% if applicant.application_status == "Pending" %}selected{% endif %}>Pending</option>
+                                <option value="Scheduled" {% if applicant.application_status == "Scheduled" %}selected{% endif %}>Scheduled</option>
+                                <option value="Selected" {% if applicant.application_status == "Selected" %}selected{% endif %}>Selected</option>
+                                <option value="Rejected" {% if applicant.application_status == "Rejected" %}selected{% endif %}>Rejected</option>
+                            </select>
+                        </div>
+
+                        <!-- Interview Panel -->
+                        <div class="mb-4">
+                            <label class="form-label" for="id_interview_panel"><strong>Interview Panel</strong></label>
+                            <div class="input-group">
+                                {{ form.interview_panel }}
+                            </div>
+                            {% if form.interview_panel.errors %}
+                                <div class="text-danger mt-1">{{ form.interview_panel.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Scheduled Time Slot -->
+                        <div class="mb-4">
+                            <label class="form-label" for="id_scheduled_time_slot"><strong>Scheduled Time Slot</strong></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-primary text-white"><i class="bi bi-calendar-date"></i></span>
+                                {{ form.scheduled_time_slot }}
+                            </div>
+                            {% if form.scheduled_time_slot.errors %}
+                                <div class="text-danger mt-1">{{ form.scheduled_time_slot.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Feedback -->
+                        <div class="mb-4">
+                            <label class="form-label" for="id_feedback_text"><strong>Feedback</strong></label>
+                            <div class="input-group">
+                                {{ form.feedback_text }}
+                            </div>
+                            {% if form.feedback_text.errors %}
+                                <div class="text-danger mt-1">{{ form.feedback_text.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Rating (0-10) -->
+                        <div class="mb-4">
+                            <label class="form-label" for="id_rating"><strong>Rating</strong></label>
+                            <div class="input-group">
+                                <input type="number" name="rating" id="id_rating" class="form-control" min="0" max="10" value="{{ form.rating.value|default_if_none:'' }}">
+                                <span class="input-group-text bg-primary text-white"><i class="bi bi-star-fill"></i></span>
+                            </div>
+                            {% if form.rating.errors %}
+                                <div class="text-danger mt-1">{{ form.rating.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-outline-success w-100 mb-2">Save Changes</button>
+                            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary w-100">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    flatpickr("input[name='scheduled_time_slot']", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        time_24hr: true
+    });
+</script>
+{% endblock %}

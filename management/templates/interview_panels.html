@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="mb-4">Interview Panels</h2>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>#</th>
+                <th>Panel Member Name</th>
+                <th>Panel Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for panel in panels %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ panel.member_name }}</td>
+                    <td>{{ panel.role }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center">No interview panels found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-danger">Back to Dashboard</a>
+</div>
+{% endblock %}

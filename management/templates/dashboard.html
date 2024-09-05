@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% block body%}
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'dashboard' %}">Admin Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'interview_panels' %}">
+                                <span class="me-2">&#x1F465;</span>
+                                Interview Panels
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'induction_report' %}">
+                                <span class="me-2">&#x1F4CA;</span>
+                                Report
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'api_docs' %}">
+                                <span class="me-2">&#x1F4C4;</span>
+                                API Docs
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Dashboard</h1>
+                </div>
+
+                <!-- Dashboard Cards -->
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card bg-primary text-white mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Applicants</h5>
+                                <p class="card-text">{{number_of_applicants}}</p> <!-- Replace with dynamic data -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-success text-white mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Interviews Scheduled</h5>
+                                <p class="card-text">{{scheduled_applicants}}</p> <!-- Replace with dynamic data -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-danger text-white mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Pending Applications</h5>
+                                <p class="card-text">{{pending_applicants}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Applications Table -->
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <h4>Applications</h4>
+                        <hr>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Status</th>
+                                        <th>Assigned to</th>
+                                        <th>Rating</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for applicant in all_applicants %}
+                                    <tr>
+                                        <td>{{applicant.name}}</td>
+                                        <td>{{applicant.email}}</td>
+                                        <td>{{applicant.application_status}}</td>
+                                        <td>{{applicant.interview_panel}}</td>
+                                        <td>{{applicant.rating}}</td>
+                                        <td><a href="{% url 'manage_applicant' applicant.id %}" class="btn btn-outline-warning">Manage</a>
+                                            <a href="{% url 'select_applicant' applicant.id %}" class="btn btn-outline-success">Select</a>
+                                            <a href="{% url 'reject_applicant' applicant.id %}" class="btn btn-outline-danger">Reject</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <a href="{% url 'notify_scheduled_applicants' %}" class="btn btn-outline-primary">Notify Scheduled Applicants</a>
+                <a href="{% url 'notify_selected_applicants' %}" class="btn btn-outline-success">Notify Selected Applicants</a>
+                <a href="{% url 'notify_rejected_applicants' %}" class="btn btn-outline-danger">Notify Rejected Applicants</a>
+            </main>
+        </div>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+{% endblock%}

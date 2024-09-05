@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    
+        
+            <div class="mb-3 p-4">
+                <a href="{% url 'login' %}" class="btn btn-outline-primary btn-block" style="font-size: 2rem; padding: 1.5rem;"><strong>Admin</strong></a>
+            </div>
+            <div class="mb-3 p-4">
+                <a href="{% url 'application_form' %}" class="btn btn-outline-success btn-block" style="font-size: 2rem; padding: 1.5rem;"><strong>Apply</strong></a>
+            </div>
+       
+   
+</div>
+{% endblock %}
