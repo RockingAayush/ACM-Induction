@@ -109,7 +109,7 @@ def send_email_to_scheduled():
         send_mail(
             'Interview Scheduled',
             f'Dear {applicant.name},\n\nYour interview is scheduled on {applicant.scheduled_time_slot}.\n\nYour interviewer is {applicant.interview_panel}',
-            'rastogi.bkn@gmail.com',
+            'YOUR_EMAIL_HERE',
             [applicant.email],
             fail_silently=False,
         )
@@ -121,7 +121,7 @@ def send_email_to_selected():
         send_mail(
             'Congratulations, You are Selected!',
             f'Dear {applicant.name},\n\nWe are pleased to inform you that you have been selected.\n\nWelcome to the family, join our whatsapp group:any_link',
-            'rastogi.bkn@gmail.com',
+            'YOUR_EMAIL_HERE',
             [applicant.email],
             fail_silently=False,
         )
@@ -132,7 +132,7 @@ def send_email_to_rejected():
         send_mail(
             'Interview Result: Not Selected',
             f'Dear {applicant.name},\n\nWe regret to inform you that you have not been selected.\n\nBetter luck next time. :)',
-            'rastogi.bkn@gmail.com',
+            'YOUR_EMAIL_HERE',
             [applicant.email],
             fail_silently=False,
         )
