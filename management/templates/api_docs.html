@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-   
+
 {% block body %}
 <style>
     body {
@@ -65,75 +65,135 @@
         color: #6c757d;
     }
 </style>
-    <div class="container mt-5">
-        <div class="card">
-            <div class="card-header text-center bg-dark mt-2">
-                <h2>API Documentation</h2>
-            </div>
-            <div class="card-body">
-                <nav>
-                    <ul class="nav nav-pills justify-content-center">
-                        <li class="nav-item">
-                            <a class="nav-link text text-success" href="#introduction">Introduction</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text text-success" href="#authentication">Authentication</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text text-success" href="#python-example">Python</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text text-success" href="#javascript-example">JavaScript</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text text-success" href="#responses">Responses</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text text-success" href="#support">Support</a>
-                        </li>
-                    </ul>
-                </nav>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header text-center bg-dark mt-2">
+            <h2>API Documentation</h2>
+        </div>
+        <div class="card-body">
+            <nav>
+                <ul class="nav nav-pills justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link text text-success" href="#introduction">Introduction</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text text-success" href="#authentication">Authentication</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text text-success" href="#python-example">Python</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text text-success" href="#javascript-example">JavaScript</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text text-success" href="#responses">Responses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text text-success" href="#support">Support</a>
+                    </li>
+                </ul>
+            </nav>
 
-                <section id="introduction">
-                    <h4 class="text text-success">Introduction</h4>
-                    <p>Welcome to the API documentation. This API provides secure access to applicant and interview panel data. 
-                       It is intended for use by authorized interview panel members only. Below, you'll find guidelines and examples 
-                       on how to use the API in various programming languages.</p>
-                </section>
+            <section id="introduction">
+                <h4 class="text text-success">Introduction</h4>
+                <p>Welcome to the API documentation. This API provides secure access to applicant and interview panel
+                    data.
+                    It is intended for use by authorized interview panel members only. Below, you'll find guidelines and
+                    examples
+                    on how to use the API in various programming languages.</p>
+            </section>
 
-                <section id="authentication">
-                    <h4 class="text text-success">Authentication</h4>
-                    <p>Access to this API is restricted to only selected Interview Panel Members. All requests must include basic authentication 
-                       with valid credentials. Ensure that your API calls are authenticated to avoid unauthorized access errors. To get your credentials contact <a href="#support">support</a>.</p>
-                </section>
+            <section id="authentication">
+                <h4 class="text text-success">Authentication</h4>
+                <p>Access to this API is restricted to only selected Interview Panel Members. All requests must include
+                    basic authentication
+                    with valid credentials. Ensure that your API calls are authenticated to avoid unauthorized access
+                    errors. To get your credentials contact <a href="#support">support</a>.</p>
+            </section>
 
-                <section id="python-example">
-                    <h4 class="text text-success">Using the API in Python</h4>
-                    <p>The following example demonstrates how to interact with the API using Python. Make sure to replace 
-                       <code>your_username</code> and <code>your_password</code> with your actual credentials.</p>
-                    <pre><code class="language-python">import requests
+            <section id="python-example">
+                <h4 class="text text-success">Using the API in Python</h4>
+                <p>The following example demonstrates how to interact with the API using Python.
+                </p>
+                <pre><code class="language-python">
+import requests
 
-url = 'https://placeholder.com/api/applicants/'
-auth = ('your_username', 'your_password')
+# API endpoint for authentication (login)
+login_url = 'http://127.0.0.1:8000/api/token/'
 
-response = requests.get(url, auth=auth)
+# Your username and password (test credentials here)
+login_data = {
+    'username': 'aayush',
+    'password': '123456'
+}
 
+# Step 1: Get the token
+response = requests.post(login_url, data=login_data)
+
+# Check if authentication was successful
 if response.status_code == 200:
-    data = response.json()
-    print("Data retrieved:", data)
-else:
-    print("Failed to retrieve data:", response.status_code)</code></pre>
-                </section>
-
-                <section id="javascript-example">
-                    <h4 class="text text-success">Using the API in JavaScript</h4>
-                    <p>This JavaScript example shows how to fetch data from the API. Make sure to use your credentials for the 
-                       <code>Authorization</code> header.</p>
-                    <pre><code class="language-javascript">fetch('https://placeholder.com/api/applicants/', {
-    method: 'GET',
-    headers: {
-        'Authorization': 'Basic ' + btoa('your_username:your_password')
+    # Extract the token
+    token = response.json().get('access')
+    print("Token:", token)
+    
+    # Step 2: Use the token to access protected resources
+    api_url = 'http://127.0.0.1:8000/api/applicants/'
+    headers = {
+        'Authorization': f'Bearer {token}'  # Add the token to the request header
     }
+    
+    api_response = requests.get(api_url, headers=headers)
+    
+    # Check if the request to the API was successful
+    if api_response.status_code == 200:
+        data = api_response.json()
+        print("Data retrieved:", data)
+    else:
+        print(f"Failed to retrieve data: {api_response.status_code}")
+        print("Response:", api_response.text)
+else:
+    print(f"Failed to authenticate: {response.status_code}")
+    print("Response:", response.text)   
+                        </code></pre>
+            </section>
+
+            <section id="javascript-example">
+                <h4 class="text text-success">Using the API in JavaScript</h4>
+                <p>This JavaScript example shows how to fetch data from the API. Make sure to use your credentials for
+                    the
+                    <code>Authorization</code> header.
+                </p>
+                <pre><code class="language-javascript">
+// Step 1: Authenticate and get the token
+fetch('http://127.0.0.1:8000/api/token/', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({   
+        username: 'aayush',  // Replace with your username(Test creds here)
+        password: '123456'   // Replace with your password
+    })
+})
+.then(response => {
+    if (response.ok) {
+        return response.json();
+    } else {
+        throw new Error('Failed to authenticate: ' + response.status);
+    }
+})
+.then(data => {
+    // Extract token
+    const token = data.access;
+    console.log('Token:', token);
+    
+    // Step 2: Use the token to access protected API
+    return fetch('http://127.0.0.1:8000/api/applicants/', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token  // Add Bearer token to the request header
+        }
+    });
 })
 .then(response => {
     if (response.ok) {
@@ -146,34 +206,36 @@ else:
     console.log('Data retrieved:', data);
 })
 .catch(error => {
-    console.error(error);
-});</code></pre>
-                </section>
+    console.error('Error:', error);
+});
+                </code></pre>
+            </section>
 
-                <section id="responses">
-                    <h4 class="text text-success">Understanding API Responses</h4>
-                    <p>The API returns data in JSON format. Here are the possible response codes and their meanings:</p>
-                    <ul>
-                        <li><strong>200 OK:</strong> The request was successful, and the data is returned.</li>
-                        <li><strong>401 Unauthorized:</strong> Authentication failed. Verify your credentials.</li>
-                        <li><strong>404 Not Found:</strong> The requested resource was not found.</li>
-                        <li><strong>500 Internal Server Error:</strong> An error occurred on the server.</li>
-                    </ul>
-                </section>
+            <section id="responses">
+                <h4 class="text text-success">Understanding API Responses</h4>
+                <p>The API returns data in JSON format. Here are the possible response codes and their meanings:</p>
+                <ul>
+                    <li><strong>200 OK:</strong> The request was successful, and the data is returned.</li>
+                    <li><strong>401 Unauthorized:</strong> Authentication failed. Verify your credentials.</li>
+                    <li><strong>404 Not Found:</strong> The requested resource was not found.</li>
+                    <li><strong>500 Internal Server Error:</strong> An error occurred on the server.</li>
+                </ul>
+            </section>
 
-                <section id="support">
-                    <h4 class="text text-success">Support</h4>
-                    <p>If you encounter any issues or need assistance, please reach out to our support team at 
-                       <a href="mailto:rastogi.bkn@gmail.com">rastogi.bkn@gmail.com</a>. We are here to help you 24/7.</p>
-                </section>
-            </div>
-            <div class="row">
-                <div class="col-md-4 ms-3">
-                    <a href="{% url 'dashboard' %}" class="btn btn-outline-danger mb-4 btn-lg">Back to Dashboard</a>
-                </div>
+            <section id="support">
+                <h4 class="text text-success">Support</h4>
+                <p>If you encounter any issues or need assistance, please reach out to our support team at
+                    <a href="mailto:rastogi.bkn@gmail.com">rastogi.bkn@gmail.com</a>. We are here to help you 24/7.
+                </p>
+            </section>
+        </div>
+        <div class="row">
+            <div class="col-md-4 ms-3">
+                <a href="{% url 'dashboard' %}" class="btn btn-outline-danger mb-4 btn-lg">Back to Dashboard</a>
             </div>
         </div>
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock %}
